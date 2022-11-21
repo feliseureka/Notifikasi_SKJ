@@ -14,6 +14,16 @@
         android:theme="@style/Theme.NotifSKJ"
         tools:targetApi="31">
         <activity
+            android:name=".ClientActivity"
+            android:exported="false"
+            android:label="@string/title_activity_client"
+            android:theme="@style/Theme.NotifSKJ" />
+        <activity
+            android:name=".ServerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_server"
+            android:theme="@style/Theme.NotifSKJ" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

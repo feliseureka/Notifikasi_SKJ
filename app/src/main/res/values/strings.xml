@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Notif SKJ</string>
+    <string name="title_activity_server">ServerActivity</string>
+    <string name="title_activity_client">ClientActivity</string>
 </resources>
