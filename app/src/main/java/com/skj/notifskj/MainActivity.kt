@@ -1,6 +1,5 @@
 package com.skj.notifskj
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,17 +9,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import com.skj.notifskj.ui.theme.NotifSKJTheme
 
 class MainActivity : ComponentActivity() {
@@ -37,22 +31,51 @@ class MainActivity : ComponentActivity() {
                         Modifier
                             .fillMaxWidth()
                             .padding(30.dp)
-                            .wrapContentSize(Alignment.Center)) {
-                        Box(modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center).padding(vertical = 30.dp)){
-                            Text(text = "Notifikasi 4 SKJ", fontSize = 30.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                            .wrapContentSize(Alignment.Center)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentSize(Alignment.Center)
+                                .padding(vertical = 30.dp)
+                        ) {
+                            Text(
+                                text = "Notifikasi 4 SKJ",
+                                fontSize = 30.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
                         }
                         Box(
                             Modifier
                                 .fillMaxWidth()
-                                .wrapContentSize(Alignment.Center).padding(vertical = 10.dp)) {
-                            Button(onClick = { startActivity(Intent(this@MainActivity, ServerActivity::class.java)) }) {
+                                .wrapContentSize(Alignment.Center)
+                                .padding(vertical = 10.dp)
+                        ) {
+                            Button(onClick = {
+                                startActivity(
+                                    Intent(
+                                        this@MainActivity,
+                                        ServerActivity::class.java
+                                    )
+                                )
+                            }) {
                                 Text(text = "Start as Server")
                             }
                         }
-                        Box(modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentSize(Alignment.Center)){
-                            Button(onClick = { startActivity(Intent(this@MainActivity, ClientActivity::class.java)) }) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentSize(Alignment.Center)
+                        ) {
+                            Button(onClick = {
+                                startActivity(
+                                    Intent(
+                                        this@MainActivity,
+                                        ClientActivity::class.java
+                                    )
+                                )
+                            }) {
                                 Text(text = "Start as Client")
                             }
                         }
