@@ -1,5 +1,7 @@
 package com.skj.notifskj
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,7 +12,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat.startActivity
 import com.skj.notifskj.ui.theme.NotifSKJTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,30 +27,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    PageMainLayout()
+                    Column(Modifier.width(IntrinsicSize.Max)) {
+                        Text(text = "Notifikasi 4 SKJ uwu")
+                        Button(onClick = { startActivity(Intent(this@MainActivity, ServerActivity::class.java)) }) {
+                            Text(text = "Start as Server")
+                        }
+                        Button(onClick = { startActivity(Intent(this@MainActivity, ClientActivity::class.java)) }) {
+                            Text(text = "Start as Client")
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun PageMainLayout() {
-    Column(Modifier.width(IntrinsicSize.Max)) {
-        Text(text = "Notifikasi 4 SKJ uwu")
-        Button(onClick = { /*TODO*/ }) {
-            Text(text = "Start as Server")
-        }
-        Button(onClick = { /*TODO*/ }) {
-            Text(text = "Start as Client")
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    NotifSKJTheme {
-        PageMainLayout()
     }
 }

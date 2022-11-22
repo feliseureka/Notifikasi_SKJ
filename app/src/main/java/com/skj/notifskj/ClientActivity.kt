@@ -39,6 +39,7 @@ fun PageMainLayout3() {
         Text(text = "You're a client")
         Text(text = "Input token from a server")
         //Input Token
+        Text(text = "Make sure you're connected in the same Local Network as the server")
         Button(onClick = { /*TODO*/ }) {
             Text(text = "Start Communicating")
         }
