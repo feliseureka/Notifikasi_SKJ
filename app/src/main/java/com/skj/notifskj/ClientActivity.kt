@@ -37,9 +37,9 @@ class ClientActivity : ComponentActivity() {
 fun PageMainLayout3() {
     Column(Modifier.width(IntrinsicSize.Max)) {
         Text(text = "You're a client")
-        Text(text = "Input token from a server")
-        //Input Token
         Text(text = "Make sure you're connected in the same Local Network as the server")
+        Text(text = "Input token from a server")
+        CreateEditText(label = "Token")
         Button(onClick = { /*TODO*/ }) {
             Text(text = "Start Communicating")
         }
