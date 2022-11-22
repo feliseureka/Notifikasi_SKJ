@@ -9,17 +9,19 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.skj.notifskj.ui.theme.NotifSKJTheme
@@ -77,22 +79,29 @@ class ClientActivity : ComponentActivity() {
 
 @Composable
 fun PageMainLayout3() {
-    Column(Modifier.width(IntrinsicSize.Max)) {
-        Text(text = "You're a client")
-        Text(text = "Make sure you're connected in the same Local Network as the server")
-        Text(text = "Input token from a server")
-        CreateEditText(label = "Token")
-        Button(onClick = { /*TODO*/ }) {
-            Text(text = "Start Communicating")
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(30.dp)
+    ) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 30.dp)
+            .wrapContentSize(Alignment.Center)){
+            Text(text = "You're a client", fontSize = 30.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
         }
-        Text(text = "You're not connected to any Server!")
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview3() {
-    NotifSKJTheme {
-        PageMainLayout3()
+        Text(text = "Make sure you're connected in the same Local Network as the server", textAlign = TextAlign.Justify)
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(30.dp)
+                .wrapContentSize(Alignment.Center)) {
+            Text(text = "Input IP from a server")
+            CreateEditText(label = "Token")
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Start Communicating")
+            }
+        }
+        Text(text = "You're not connected to any Server!", textAlign = TextAlign.Center)
     }
 }
