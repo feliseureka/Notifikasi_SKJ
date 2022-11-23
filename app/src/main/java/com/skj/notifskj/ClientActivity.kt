@@ -6,6 +6,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Debug
+import android.os.StrictMode
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -128,21 +132,29 @@ fun ClientScreen() {
                 label = { Text("Token") }
             )
             Button({
-                try {
-                    val socket = Socket(serverIpAddress, 3000)
+                val policy = StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build()
+                StrictMode.setThreadPolicy(policy)
+                val t = Thread {
+                    try {
+                        val socketClient = Socket(serverIpAddress, 3000)
 
-                    val inputStream = DataInputStream(socket.getInputStream())
+                        val inputStream = DataInputStream(socketClient.getInputStream())
 
-                    val bufferedReader = inputStream.bufferedReader()
+                        val bufferedReader = inputStream.bufferedReader()
 
-                    val title = bufferedReader.readLine()
-                    val desc = bufferedReader.readLine()
+                        val title = bufferedReader.readLine()
+                        val desc = bufferedReader.readLine()
 
-                    ctx.createNotification(title, desc)
-
-                    inputStream.close()
-                    socket.close()
-                } catch (_: IOException) {}
+                        val st = "$title $desc"
+                        Log.e("Client", st)
+                        inputStream.close()
+                        socketClient.close()
+                    } catch (_: IOException) {
+                    }
+                }
+                t.start()
+                t.join()
             }) {
                 Text(text = "Start Communicating")
             }

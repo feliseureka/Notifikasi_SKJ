@@ -4,6 +4,9 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.LinkProperties
 import android.os.Bundle
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -21,9 +24,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skj.notifskj.ui.theme.NotifSKJTheme
+import java.io.BufferedWriter
 import java.io.DataOutputStream
 import java.io.IOException
 import java.net.ServerSocket
+
 
 class ServerActivity : ComponentActivity() {
 
@@ -139,22 +144,27 @@ fun ServerScreen() {
                     .wrapContentSize(Alignment.Center)
             ) {
                 Button({
+                    val policy = ThreadPolicy.Builder()
+                        .permitAll().build()
+                    StrictMode.setThreadPolicy(policy)
+                    val ti = title
+                    val de = desc
                     Thread {
                         try {
+                            Log.e("sers", "Server start")
                             val serverSocket = ServerSocket(3000)
-
+                            Log.e("sers", "Server create socket")
                             val socket = serverSocket.accept()
-
+                            Log.e("sers", "Server accept client socket")
                             val outputStream = DataOutputStream(socket.getOutputStream())
 
                             val bufferedWriter = outputStream.bufferedWriter()
+                            bufferedWriter.appendLine(ti)
 
-                            bufferedWriter.appendLine(title)
-
-                            bufferedWriter.appendLine(desc)
-
+                            bufferedWriter.appendLine(de)
+                            Log.e("ser", "$ti $de")
+                            bufferedWriter.close()
                             outputStream.close()
-
                             socket.close()
                         } catch (_: IOException) { }
                     }.start()
