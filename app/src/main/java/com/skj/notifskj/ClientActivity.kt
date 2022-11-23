@@ -9,13 +9,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -23,6 +25,10 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.skj.notifskj.ui.theme.NotifSKJTheme
+import java.io.DataInputStream
+import java.io.IOException
+import java.net.Socket
+
 
 class ClientActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +40,7 @@ class ClientActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    PageMainLayout3()
+                    ClientScreen()
                 }
             }
         }
@@ -76,8 +82,15 @@ class ClientActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PageMainLayout3() {
+fun ClientScreen() {
+    var serverIpAddress by rememberSaveable {
+        mutableStateOf("")
+    }
+
+    val ctx = LocalContext.current as ClientActivity
+
     Column(
         Modifier
             .fillMaxWidth()
@@ -107,8 +120,30 @@ fun PageMainLayout3() {
                 .wrapContentSize(Alignment.Center)
         ) {
             Text(text = "Input IP from a server")
-            CreateEditText(label = "Token")
-            Button(onClick = { /*TODO*/ }) {
+            TextField(
+                value = serverIpAddress,
+                onValueChange = {
+                    serverIpAddress = it
+                },
+                label = { Text("Token") }
+            )
+            Button({
+                try {
+                    val socket = Socket(serverIpAddress, 3000)
+
+                    val inputStream = DataInputStream(socket.getInputStream())
+
+                    val bufferedReader = inputStream.bufferedReader()
+
+                    val title = bufferedReader.readLine()
+                    val desc = bufferedReader.readLine()
+
+                    ctx.createNotification(title, desc)
+
+                    inputStream.close()
+                    socket.close()
+                } catch (_: IOException) {}
+            }) {
                 Text(text = "Start Communicating")
             }
         }
