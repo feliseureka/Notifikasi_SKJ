@@ -151,18 +151,14 @@ fun ServerScreen() {
                     val de = desc
                     Thread {
                         try {
-                            Log.e("sers", "Server start")
                             val serverSocket = ServerSocket(3000)
-                            Log.e("sers", "Server create socket")
                             val socket = serverSocket.accept()
-                            Log.e("sers", "Server accept client socket")
                             val outputStream = DataOutputStream(socket.getOutputStream())
 
                             val bufferedWriter = outputStream.bufferedWriter()
                             bufferedWriter.appendLine(ti)
 
                             bufferedWriter.appendLine(de)
-                            Log.e("ser", "$ti $de")
                             bufferedWriter.close()
                             outputStream.close()
                             socket.close()

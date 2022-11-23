@@ -48,8 +48,7 @@ class ClientActivity : ComponentActivity() {
                 }
             }
         }
-        createNotificationChannel()
-        //sendNotification()
+
     }
 
     fun createNotification(title: String, desc: String) {
@@ -146,8 +145,8 @@ fun ClientScreen() {
                         val title = bufferedReader.readLine()
                         val desc = bufferedReader.readLine()
 
-                        val st = "$title $desc"
-                        Log.e("Client", st)
+                        ctx.createNotification(title, desc)
+
                         inputStream.close()
                         socketClient.close()
                     } catch (_: IOException) {
