@@ -131,6 +131,7 @@ fun ClientScreen() {
                 label = { Text("Token") }
             )
             Button({
+                var isSuccess = false
                 val policy = StrictMode.ThreadPolicy.Builder()
                     .permitAll().build()
                 StrictMode.setThreadPolicy(policy)
@@ -138,6 +139,10 @@ fun ClientScreen() {
                     try {
                         val socketClient = Socket(serverIpAddress, 3000)
 
+                        if(!socketClient.isConnected){
+                            Thread.currentThread().interrupt()
+                        }
+                        isSuccess = true
                         val inputStream = DataInputStream(socketClient.getInputStream())
 
                         val bufferedReader = inputStream.bufferedReader()
@@ -145,15 +150,18 @@ fun ClientScreen() {
                         val title = bufferedReader.readLine()
                         val desc = bufferedReader.readLine()
 
-                        ctx.createNotification(title, desc)
-
                         inputStream.close()
                         socketClient.close()
+                        ctx.createNotification(title, desc)
                     } catch (_: IOException) {
                     }
                 }
                 t.start()
                 t.join()
+                if(!isSuccess){
+                    Toast.makeText(ctx, "Failed to Connect", Toast.LENGTH_SHORT).show()
+                    isSuccess = false
+                }
             }) {
                 Text(text = "Start Communicating")
             }

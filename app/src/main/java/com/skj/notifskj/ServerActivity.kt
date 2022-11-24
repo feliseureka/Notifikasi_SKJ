@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -27,6 +28,7 @@ import com.skj.notifskj.ui.theme.NotifSKJTheme
 import java.io.BufferedWriter
 import java.io.DataOutputStream
 import java.io.IOException
+import java.net.InetAddress
 import java.net.ServerSocket
 
 
@@ -59,6 +61,7 @@ fun ServerScreen() {
     var desc by rememberSaveable {
         mutableStateOf("")
     }
+    val ctxs = LocalContext.current as ServerActivity
 
     Column(
         Modifier
@@ -82,11 +85,10 @@ fun ServerScreen() {
             text = "Make sure you're connected in the same Local Network as the clients",
             textAlign = TextAlign.Justify
         )
-        val connectivityManager =
-            LocalContext.current.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val link =
-            connectivityManager.getLinkProperties(connectivityManager.activeNetwork) as LinkProperties
-        val ip = link.linkAddresses[0].address.hostAddress
+        var ip = ""
+        val th = Thread{ip = InetAddress.getLocalHost().hostAddress}
+        th.start()
+        th.join()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -164,7 +166,7 @@ fun ServerScreen() {
                             socket.close()
                         } catch (_: IOException) { }
                     }.start()
-
+                    Toast.makeText(ctxs, "Notification Sent, wait for client to connect", Toast.LENGTH_SHORT).show()
                     title = ""
                     desc = ""
                 }) {
